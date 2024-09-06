@@ -144,7 +144,7 @@ h1 {
 
 /* Remove default dropdown arrow */
 select.currency-dropdown {
-  background-image: url('path/to/your-arrow-icon.svg');
+  background-image: url(' ');
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 12px;
