@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import logoImg from '../assets/logo.jpg';
 import Button from './UI/Button';
-import CurrencyDropdown from './UI/CurrencyDropdown'; // Import the currency dropdown
+import CurrencyDropdown from './UI/CurrencyDropdown'; 
 import CartContext from '../store/CartContext';
 import UserProgressContext from '../store/UserProgressContext';
 

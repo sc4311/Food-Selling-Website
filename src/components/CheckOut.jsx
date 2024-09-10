@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import Modal from './UI/Modal.jsx';
 import CartContext from '../store/CartContext';
-import { getCurrencyFormatter } from '../util/formatting.js';  // Use getCurrencyFormatter
+import { getCurrencyFormatter } from '../util/formatting.js';  
 import Input from './Input.jsx';
-import Button from './UI/Button.jsx';  // Assuming Button is missing
+import Button from './UI/Button.jsx';  
 import UserProgressContext from '../store/UserProgressContext.jsx';
 
 export default function Checkout() {
