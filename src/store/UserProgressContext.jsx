@@ -1,40 +1,52 @@
-import { createContext, useState } from "react";
+import React, { useState, createContext } from "react";
 
-const UserProgressContext = createContext({
+// Create a named export for UserProgressContext
+export const UserProgressContext = createContext({
     process: '',
     showCart: () => {},
-    hideCart: () => {},
+    hideCheckout: () => {},
     showCheckout: () => {},
-    hideCheckout: () => {}
+    showAccount: () => {}, // New function to show account modal
+    hideAccount: () => {}, // New function to hide account modal
 });
 
-export function UserProgressContextProvider({ children }){
-    const [userProgress, setUserProgress] = useState('');
-    function showCart(){
-        setUserProgress('cart');
-    }
-    function hideCart(){
-        setUserProgress('');
-    }
-    function showCheckout(){
-        setUserProgress('checkout');
-    }
-    function hideCheckout(){
-        setUserProgress('');
-    }
+export function UserProgressContextProvider({ children }) {
+    const [process, setProcess] = useState('');
 
-    const userProgressCtx = {
-        process: userProgress,
-        showCart: showCart,
-        hideCart: hideCart,
-        showCheckout: showCheckout,
-        hideCheckout: hideCheckout
-    }
-    return(
-        <UserProgressContext.Provider value={userProgressCtx}>
+    const showCart = () => {
+        setProcess('cart');
+    };
+
+    const showCheckout = () => {
+        setProcess('checkout');
+    };
+
+    const hideCheckout = () => {
+        setProcess('');
+    };
+
+    const showAccount = () => {
+        setProcess('account');
+    };
+
+    const hideAccount = () => {
+        setProcess('');
+    };
+
+    const contextValue = {
+        process,
+        showCart,
+        hideCheckout,
+        showCheckout,
+        showAccount,
+        hideAccount,
+    };
+
+    return (
+        <UserProgressContext.Provider value={contextValue}>
             {children}
         </UserProgressContext.Provider>
-    )
+    );
 }
 
 export default UserProgressContext;
