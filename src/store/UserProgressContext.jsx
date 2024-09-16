@@ -4,10 +4,11 @@ import React, { useState, createContext } from "react";
 export const UserProgressContext = createContext({
     process: '',
     showCart: () => {},
+    hideCart: () => {}, // Add hideCart function here
     hideCheckout: () => {},
     showCheckout: () => {},
-    showAccount: () => {}, // New function to show account modal
-    hideAccount: () => {}, // New function to hide account modal
+    showAccount: () => {},
+    hideAccount: () => {},
 });
 
 export function UserProgressContextProvider({ children }) {
@@ -15,6 +16,10 @@ export function UserProgressContextProvider({ children }) {
 
     const showCart = () => {
         setProcess('cart');
+    };
+
+    const hideCart = () => {
+        setProcess(''); // Reset the process state when the cart is closed
     };
 
     const showCheckout = () => {
@@ -36,6 +41,7 @@ export function UserProgressContextProvider({ children }) {
     const contextValue = {
         process,
         showCart,
+        hideCart, // Add the hideCart function to contextValue
         hideCheckout,
         showCheckout,
         showAccount,
