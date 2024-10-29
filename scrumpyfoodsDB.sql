@@ -85,6 +85,7 @@ CREATE TABLE `desserts` (
   `dessert_name` varchar(255) DEFAULT NULL,
   `dessert_price` float DEFAULT NULL,
   `dessert_description` varchar(255) DEFAULT NULL,
+  `dessert_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`dessert_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -95,7 +96,7 @@ CREATE TABLE `desserts` (
 
 LOCK TABLES `desserts` WRITE;
 /*!40000 ALTER TABLE `desserts` DISABLE KEYS */;
-INSERT INTO `desserts` VALUES (1,'Cake',3.99,'A slice of moist, fluffy cake topped with rich frosting.'),(2,'Pie',3.99,'A slice of homemade pie with a flaky crust and sweet filling.'),(3,'Brownie',2.99,'A rich, fudgy brownie with a decadent chocolate flavor.'),(4,'Cookies',1.99,'2 freshly baked cookies with a soft, chewy center and crispy edges.'),(5,'Cheesecake',4.99,'A slice of creamy, smooth cheesecake with a buttery graham cracker crust.'),(6,'Tiramisu',3.99,'A delicate Italian dessert made with layers of espresso-soaked ladyfingers and mascarpone cream, dusted with cocoa powder.'),(7,'Ice Cream',2.99,'2 large scoops of your favorite ice cream flavor, creamy and refreshing.');
+INSERT INTO `desserts` VALUES (1,'Cake',3.99,'A slice of moist, fluffy cake topped with rich frosting.','https://shorturl.at/PbKcb'),(2,'Pie',3.99,'A slice of homemade pie with a flaky crust and sweet filling.','https://shorturl.at/PtLhT'),(3,'Brownie',2.99,'A rich, fudgy brownie with a decadent chocolate flavor.','https://shorturl.at/UlFkg'),(4,'Cookies',1.99,'2 freshly baked cookies with a soft, chewy center and crispy edges.','https://shorturl.at/TQect'),(5,'Cheesecake',4.99,'A slice of creamy, smooth cheesecake with a buttery graham cracker crust.','https://shorturl.at/PeqZh'),(6,'Tiramisu',3.99,'A delicate Italian dessert made with layers of espresso-soaked ladyfingers and mascarpone cream, dusted with cocoa powder.','https://shorturl.at/cfw0a'),(7,'Ice Cream',2.99,'2 large scoops of your favorite ice cream flavor, creamy and refreshing.','https://shorturl.at/2BJUZ');
 /*!40000 ALTER TABLE `desserts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,6 +112,7 @@ CREATE TABLE `drinks` (
   `drink_name` varchar(255) DEFAULT NULL,
   `drink_price` float DEFAULT NULL,
   `drink_description` varchar(255) DEFAULT NULL,
+  `drink_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`drink_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -121,7 +123,7 @@ CREATE TABLE `drinks` (
 
 LOCK TABLES `drinks` WRITE;
 /*!40000 ALTER TABLE `drinks` DISABLE KEYS */;
-INSERT INTO `drinks` VALUES (1,'L Fountain Soda',1.99,'Large refreshing fountain soda to quench your thirst, available in multiple flavors.'),(2,'M Fountain Soda',1.79,'Medium refreshing fountain soda to quench your thirst, available in multiple flavors.'),(3,'S Fountain Soda',1.49,'Small refreshing fountain soda to quench your thirst, available in multiple flavors.'),(4,'Sweet Tea',1.49,'Classic sweet tea, brewed fresh and perfectly sweetened.'),(5,'Coffee',2.49,'Hot brewed coffee, bold and aromatic, perfect for a caffeine boost.'),(6,'Beer',2.99,'A chilled bottle of your favorite beer, crisp and refreshing.'),(7,'Water',0.99,'A bottle of pure, refreshing water to stay hydrated.');
+INSERT INTO `drinks` VALUES (1,'L Fountain Soda',1.99,'Large refreshing fountain soda to quench your thirst, available in multiple flavors.',NULL),(2,'M Fountain Soda',1.79,'Medium refreshing fountain soda to quench your thirst, available in multiple flavors.',NULL),(3,'S Fountain Soda',1.49,'Small refreshing fountain soda to quench your thirst, available in multiple flavors.',NULL),(4,'Sweet Tea',1.49,'Classic sweet tea, brewed fresh and perfectly sweetened.',NULL),(5,'Coffee',2.49,'Hot brewed coffee, bold and aromatic, perfect for a caffeine boost.',NULL),(6,'Beer',2.99,'A chilled bottle of your favorite beer, crisp and refreshing.',NULL),(7,'Water',0.99,'A bottle of pure, refreshing water to stay hydrated.',NULL);
 /*!40000 ALTER TABLE `drinks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,6 +139,7 @@ CREATE TABLE `main_courses` (
   `main_name` varchar(255) DEFAULT NULL,
   `main_price` float DEFAULT NULL,
   `main_description` varchar(255) DEFAULT NULL,
+  `main_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`main_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -147,7 +150,7 @@ CREATE TABLE `main_courses` (
 
 LOCK TABLES `main_courses` WRITE;
 /*!40000 ALTER TABLE `main_courses` DISABLE KEYS */;
-INSERT INTO `main_courses` VALUES (1,'Steak',24.99,'A perfectly seared steak, seasoned to perfection, and served with a side of roasted vegetables and fried potato wedges.'),(2,'Roasted Chicken',16.99,'Juicy, tender roasted chicken infused with herbs and spices, paired with garlic mashed potatoes.'),(3,'Fried Chicken',13.99,'Crispy, golden fried chicken, cooked to perfection, served with a side of coleslaw and fries.'),(4,'Ribs',17.99,'Slow-cooked, fall-off-the-bone ribs smothered in a smoky barbecue sauce, with a side of cornbread.'),(5,'Alfredo',15.99,'Creamy Alfredo pasta, topped with grilled chicken and Parmesan cheese, served with garlic bread.'),(6,'Spaghetti',14.99,'Classic spaghetti pasta tossed in a rich tomato marinara sauce, topped with fresh basil and Parmesan cheese.'),(7,'Salmon',23.99,'Grilled salmon filet, seasoned with lemon and herbs, served with steamed asparagus and white rice.'),(8,'Soft Tacos',11.99,'Warm softshell tortillas filled with grilled sliced meats, sautéed peppers, onions, and fresh salsa.'),(9,'Hardshell Tacos',11.99,'Crispy hardshell tacos filled with seasoned ground beef, lettuce, tomatoes, and cheddar cheese.'),(10,'Vegetable Stir Fry',12.99,'A vibrant mix of stir-fried vegetables, served over jasmine rice with a savory soy-ginger sauce.');
+INSERT INTO `main_courses` VALUES (1,'Steak',24.99,'A perfectly seared steak, seasoned to perfection, and served with a side of roasted vegetables and fried potato wedges.',NULL),(2,'Roasted Chicken',16.99,'Juicy, tender roasted chicken infused with herbs and spices, paired with garlic mashed potatoes.',NULL),(3,'Fried Chicken',13.99,'Crispy, golden fried chicken, cooked to perfection, served with a side of coleslaw and fries.',NULL),(4,'Ribs',17.99,'Slow-cooked, fall-off-the-bone ribs smothered in a smoky barbecue sauce, with a side of cornbread.',NULL),(5,'Alfredo',15.99,'Creamy Alfredo pasta, topped with grilled chicken and Parmesan cheese, served with garlic bread.',NULL),(6,'Spaghetti',14.99,'Classic spaghetti pasta tossed in a rich tomato marinara sauce, topped with fresh basil and Parmesan cheese.',NULL),(7,'Salmon',23.99,'Grilled salmon filet, seasoned with lemon and herbs, served with steamed asparagus and white rice.',NULL),(8,'Soft Tacos',11.99,'Warm softshell tortillas filled with grilled sliced meats, sautéed peppers, onions, and fresh salsa.',NULL),(9,'Hardshell Tacos',11.99,'Crispy hardshell tacos filled with seasoned ground beef, lettuce, tomatoes, and cheddar cheese.',NULL),(10,'Vegetable Stir Fry',12.99,'A vibrant mix of stir-fried vegetables, served over jasmine rice with a savory soy-ginger sauce.',NULL);
 /*!40000 ALTER TABLE `main_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,4 +240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-18  9:35:48
+-- Dump completed on 2024-10-29 12:16:46
