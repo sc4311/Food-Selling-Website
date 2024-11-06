@@ -123,7 +123,7 @@ CREATE TABLE `drinks` (
 
 LOCK TABLES `drinks` WRITE;
 /*!40000 ALTER TABLE `drinks` DISABLE KEYS */;
-INSERT INTO `drinks` VALUES (1,'L Fountain Soda',1.99,'Large refreshing fountain soda to quench your thirst, available in multiple flavors.',NULL),(2,'M Fountain Soda',1.79,'Medium refreshing fountain soda to quench your thirst, available in multiple flavors.',NULL),(3,'S Fountain Soda',1.49,'Small refreshing fountain soda to quench your thirst, available in multiple flavors.',NULL),(4,'Sweet Tea',1.49,'Classic sweet tea, brewed fresh and perfectly sweetened.',NULL),(5,'Coffee',2.49,'Hot brewed coffee, bold and aromatic, perfect for a caffeine boost.',NULL),(6,'Beer',2.99,'A chilled bottle of your favorite beer, crisp and refreshing.',NULL),(7,'Water',0.99,'A bottle of pure, refreshing water to stay hydrated.',NULL);
+INSERT INTO `drinks` VALUES (1,'L Fountain Soda',1.99,'Large refreshing fountain soda to quench your thirst, available in multiple flavors.','https://shorturl.at/TmWym'),(2,'M Fountain Soda',1.79,'Medium refreshing fountain soda to quench your thirst, available in multiple flavors.','https://shorturl.at/TmWym'),(3,'S Fountain Soda',1.49,'Small refreshing fountain soda to quench your thirst, available in multiple flavors.','https://shorturl.at/TmWym'),(4,'Sweet Tea',1.49,'Classic sweet tea, brewed fresh and perfectly sweetened.','https://shorturl.at/wh3qJ'),(5,'Coffee',2.49,'Hot brewed coffee, bold and aromatic, perfect for a caffeine boost.','https://shorturl.at/d2v3k'),(6,'Water',0.99,'A bottle of pure, refreshing water to stay hydrated.','https://shorturl.at/JQpld');
 /*!40000 ALTER TABLE `drinks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,7 +150,7 @@ CREATE TABLE `main_courses` (
 
 LOCK TABLES `main_courses` WRITE;
 /*!40000 ALTER TABLE `main_courses` DISABLE KEYS */;
-INSERT INTO `main_courses` VALUES (1,'Steak',24.99,'A perfectly seared steak, seasoned to perfection, and served with a side of roasted vegetables and fried potato wedges.',NULL),(2,'Roasted Chicken',16.99,'Juicy, tender roasted chicken infused with herbs and spices, paired with garlic mashed potatoes.',NULL),(3,'Fried Chicken',13.99,'Crispy, golden fried chicken, cooked to perfection, served with a side of coleslaw and fries.',NULL),(4,'Ribs',17.99,'Slow-cooked, fall-off-the-bone ribs smothered in a smoky barbecue sauce, with a side of cornbread.',NULL),(5,'Alfredo',15.99,'Creamy Alfredo pasta, topped with grilled chicken and Parmesan cheese, served with garlic bread.',NULL),(6,'Spaghetti',14.99,'Classic spaghetti pasta tossed in a rich tomato marinara sauce, topped with fresh basil and Parmesan cheese.',NULL),(7,'Salmon',23.99,'Grilled salmon filet, seasoned with lemon and herbs, served with steamed asparagus and white rice.',NULL),(8,'Soft Tacos',11.99,'Warm softshell tortillas filled with grilled sliced meats, sautéed peppers, onions, and fresh salsa.',NULL),(9,'Hardshell Tacos',11.99,'Crispy hardshell tacos filled with seasoned ground beef, lettuce, tomatoes, and cheddar cheese.',NULL),(10,'Vegetable Stir Fry',12.99,'A vibrant mix of stir-fried vegetables, served over jasmine rice with a savory soy-ginger sauce.',NULL);
+INSERT INTO `main_courses` VALUES (1,'Steak',24.99,'A perfectly seared steak, seasoned to perfection, and served with a side of roasted vegetables and fried potato wedges.','https://shorturl.at/1PysI'),(2,'Roasted Chicken',16.99,'Juicy, tender roasted chicken infused with herbs and spices, paired with garlic mashed potatoes.','https://shorturl.at/FkSzD'),(3,'Fried Chicken',13.99,'Crispy, golden fried chicken, cooked to perfection, served with a side of coleslaw and fries.','https://shorturl.at/f2nEq'),(4,'Ribs',17.99,'Slow-cooked, fall-off-the-bone ribs smothered in a smoky barbecue sauce, with a side of cornbread.','https://shorturl.at/Vy5l9'),(5,'Alfredo',15.99,'Creamy Alfredo pasta, topped with grilled chicken and Parmesan cheese, served with garlic bread.','https://shorturl.at/Lv7LT'),(6,'Spaghetti',14.99,'Classic spaghetti pasta tossed in a rich tomato marinara sauce, topped with fresh basil and Parmesan cheese.','https://shorturl.at/gaJ8K'),(7,'Salmon',23.99,'Grilled salmon filet, seasoned with lemon and herbs, served with steamed asparagus and potatoes.','https://shorturl.at/NZKIM'),(8,'Soft Tacos',11.99,'Warm softshell tortillas filled with grilled sliced meats, sautéed peppers, onions, and fresh salsa.','https://shorturl.at/AYRzC'),(9,'Hardshell Tacos',11.99,'Crispy hardshell tacos filled with seasoned ground beef, lettuce, tomatoes, and cheddar cheese.','https://shorturl.at/ReGpg'),(10,'Vegetable Stir Fry',12.99,'A vibrant mix of stir-fried vegetables, served over jasmine rice with a savory soy-ginger sauce.','https://shorturl.at/cWT84');
 /*!40000 ALTER TABLE `main_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,6 +166,7 @@ CREATE TABLE `salads` (
   `salad_name` varchar(255) DEFAULT NULL,
   `salad_price` float DEFAULT NULL,
   `salad_description` varchar(255) DEFAULT NULL,
+  `salad_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`salad_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -176,7 +177,7 @@ CREATE TABLE `salads` (
 
 LOCK TABLES `salads` WRITE;
 /*!40000 ALTER TABLE `salads` DISABLE KEYS */;
-INSERT INTO `salads` VALUES (1,'Caesar Salad',11.99,'Crisp romaine lettuce topped with crunchy croutons and dressed with lemon juice, olive oil, eggs, worchestershire sauce, anchovies, garlic, dijon mustard, parmesan cheese, and black pepper.'),(2,'House Salad',10.99,'A fresh and vibrant mix of crisp greens, juicy tomatoes, cucumbers, and red onions, topped with a light vinaigrette.'),(3,'Greek Salad',12.99,'A fresh Greek salad with vine-ripe tomatoes, cucumber, Kalamata olives, red onions, and feta, tossed in olive oil, lemon, and oregano dressing.'),(4,'Chicken Salad',14.99,'A hearty chicken salad with fried chicken tender bits, crisp mixed greens, cherry tomatoes, and avocado, drizzled with a light lemon herb vinaigrette.'),(5,'Tuna Salad',11.99,'Flavorful flaky tuna, crisp greens, cherry tomatoes, red onions, cucumber, mayo, hard boiled eggs, and a tangy lemon-caper dressing.'),(6,'Caprese Salad',13.99,'Sliced fresh mozzarella, tomatoes, and sweet basil, seasoned with salt, and olive oil.');
+INSERT INTO `salads` VALUES (1,'Caesar Salad',11.99,'Crisp romaine lettuce topped with crunchy croutons and dressed with lemon juice, olive oil, eggs, worchestershire sauce, anchovies, garlic, dijon mustard, parmesan cheese, and black pepper.','https://shorturl.at/Ju9Ux'),(2,'House Salad',10.99,'A fresh and vibrant mix of crisp greens, juicy tomatoes, cucumbers, and red onions, topped with a light vinaigrette.','https://shorturl.at/A36XH'),(3,'Greek Salad',12.99,'A fresh Greek salad with vine-ripe tomatoes, cucumber, Kalamata olives, red onions, and feta, tossed in olive oil, lemon, and oregano dressing.','https://shorturl.at/xtevA'),(4,'Chicken Salad',14.99,'A hearty chicken salad with fried chicken tender bits, crisp mixed greens, and cherry tomatoes, drizzled with a light lemon herb vinaigrette.','https://shorturl.at/yXx1L'),(5,'Tuna Salad',11.99,'Flavorful flaky tuna, crisp greens, cherry tomatoes, red onions, cucumber, mayo, and a tangy lemon-caper dressing.','https://shorturl.at/UkwLn'),(6,'Caprese Salad',13.99,'Sliced fresh mozzarella, tomatoes, and sweet basil, seasoned with salt, and olive oil.','https://shorturl.at/9GhrR');
 /*!40000 ALTER TABLE `salads` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,6 +193,7 @@ CREATE TABLE `sides` (
   `side_name` varchar(255) DEFAULT NULL,
   `side_price` float DEFAULT NULL,
   `side_description` varchar(255) DEFAULT NULL,
+  `side_image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`side_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -202,7 +204,7 @@ CREATE TABLE `sides` (
 
 LOCK TABLES `sides` WRITE;
 /*!40000 ALTER TABLE `sides` DISABLE KEYS */;
-INSERT INTO `sides` VALUES (1,'Cajun Fries',3.99,'Crispy fries tossed in a bold Cajun seasoning.'),(2,'Fries',3.99,'Golden, crispy fries seasoned with a touch of salt.'),(3,'Mashed Potatoes',4.99,'Creamy mashed potatoes with a hint of butter and garlic, with an option of gravy.'),(4,'Onion Rings',3.99,'Crispy, battered, and rolled in fresh breadcrumbs for the perfect crust, served golden brown.'),(5,'Grilled Vegetables',4.99,'A fresh medley of seasonal vegetables, grilled to perfection.'),(6,'Garlic Bread',3.99,'Toasted garlic bread with a crispy crust and buttery garlic spread.'),(7,'Mac n Cheese',5.99,'Rich and creamy macaroni and cheese topped with bacon bits.'),(8,'Coleslaw',3.99,'Crunchy coleslaw mixed with a creamy, tangy dressing.'),(9,'White Rice',3.99,'Steamed white rice, light and fluffy.');
+INSERT INTO `sides` VALUES (1,'Cajun Fries',3.99,'Crispy fries tossed in a bold Cajun seasoning.','https://shorturl.at/rcNni'),(2,'Fries',3.99,'Golden, crispy fries seasoned with a touch of salt.','https://shorturl.at/156uY'),(3,'Mashed Potatoes',4.99,'Creamy mashed potatoes with a hint of butter and garlic, with an option of gravy.','https://shorturl.at/055Cc'),(4,'Onion Rings',3.99,'Crispy, battered, and rolled in fresh breadcrumbs for the perfect crust, served golden brown.','https://shorturl.at/aHo9z'),(5,'Grilled Vegetables',4.99,'A fresh medley of seasonal vegetables, grilled to perfection.','https://shorturl.at/L7MJB'),(6,'Garlic Bread',3.99,'Toasted garlic bread with a crispy crust and buttery garlic spread.','https://shorturl.at/AkB2t'),(7,'Mac n Cheese',5.99,'Rich and creamy macaroni and cheese topped with bacon bits.','https://shorturl.at/S1mLQ'),(8,'Coleslaw',3.99,'Crunchy coleslaw mixed with a creamy, tangy dressing.','https://shorturl.at/VR2kW'),(9,'White Rice',3.99,'Steamed white rice, light and fluffy.','https://shorturl.at/POTxy');
 /*!40000 ALTER TABLE `sides` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,4 +242,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-29 12:16:46
+-- Dump completed on 2024-11-06 12:18:14
