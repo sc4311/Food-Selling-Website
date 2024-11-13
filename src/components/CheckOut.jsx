@@ -76,7 +76,7 @@ export default function Checkout() {
     if (!isSignedIn) {
         return (
             <Modal open={userProgressCtx.process === 'checkout'} onClose={handleClose}>
-                <SignIn onSignIn={handleSignIn} onCreateAccount={handleCreateAccount} />
+                <SignIn onSignIn={handleSignIn} onCreateAccount={handleCreateAccount} onClose={handleClose}/>
             </Modal>
         );
     }

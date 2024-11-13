@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import bodyParser from 'body-parser';
 import express from 'express';
-import mysql from 'mysql2';
 
 const app = express();
 
@@ -14,12 +13,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
-
-const conn = mysql.createConnection({
-  host: 'scrumpy-foods.cj0cmagoo0l5.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: 'scrumpyfoods2024!'
-})
 
 app.get('/meals', async (req, res) => {
   const meals = await fs.readFile('./data/available-meals.json', 'utf8');
@@ -64,35 +57,52 @@ app.post('/orders', async (req, res) => {
   res.status(201).json({ message: 'Order created!' });
 });
 
-app.post('/api/auth/signin', (req, res) => {
-  const { username, password } = req.body;
-  
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username and password are required.'});
-  }
+app.post('/api/auth/signin', async (req, res) => {
+  const { email, password } = req.body;
 
-  conn.query('SELECT acc_id FROM accounts WHERE acc_username = ? LIMIT 1', [username], (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Database error.' });
-    }
+  try {
+    const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
+    const accounts = JSON.parse(accountsData);
 
-    if (results.length === 0) {
-      const role = 'user';
-      conn.query(
-        'INSERT INTO accounts (acc_username, acc_password, role) VALUES (?, ?, ?)',
-        [username, password, role],
-        (err) => {
-          if (err) {
-            return res.status(500).json({ message: 'Failed to create account.' });
-          }
-          res.status(201).json({ message: 'Account created successfully.' });
-        }
-      );
+    const user = accounts.find(
+      (account) => account.email === email
+    );
+
+    if (user) {
+      res.status(200).json({ message: 'User found, logged in successfully.' });
     } else {
-      res.status(200).json({ message: 'User signed in successfully.' });
+      res.status (401).json({ message: 'Invalid email or password.' });
     }
-  });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error.' });
+    console.error(error);
+  }
 });
+
+app.post('/api/auth/signup', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
+    const accounts = JSON.parse(accountsData);
+
+    const userExists = accounts.some((account) => account.email === email);
+
+    if (userExists) {
+      res.status(409).json({ message: 'User already exists.' });
+    } else {
+      const newUser = { email, password };
+      accounts.push(newUser);
+
+      await fs.writeFile('./data/accounts.json', JSON.stringify(accounts));
+
+      res.status(201).json({ message: 'Account created successfully.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error.' });
+    console.error(error);
+  }
+})
 
 app.use((req, res) => {
   if (req.method === 'OPTIONS') {
