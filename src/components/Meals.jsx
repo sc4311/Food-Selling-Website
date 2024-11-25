@@ -1,30 +1,33 @@
-import { useEffect, useState } from 'react';
+import useHttp from '../hooks/useHttp.js';
 import MealItem from './MealItem.jsx';
 
-export default function Meals({ currency, exchangeRates, currencyFormatter }) {
-    const [loadedMeals, setLoadedMeals] = useState([]);
 
-    useEffect(() => {
-        async function fetchMeals() {
-            const response = await fetch('http://localhost:3000/meals');
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
-            const meals = await response.json();
-            setLoadedMeals(meals);
-        }
-        fetchMeals();
-    }, []);
+const requestConfig = {};
+export default function Meals({ currency, exchangeRates, currencyFormatter }) {
+    const table = 'main_courses';
+    const {
+        data: loadedMeals,
+        isLoading,
+        error,
+    } = useHttp(`http://localhost:3000/${table}`, requestConfig, []);
+
+    if (isLoading) {
+        return <p className="center">Loading...</p>;
+    }
+
+    if (error) {
+        return <Error title="Failed to fetch meals" message={error} />;
+    }
 
     return (
         <ul id='meals'>
             {loadedMeals.map((meal) => (
-                <MealItem 
-                    key={meal.id} 
-                    meal={meal} 
-                    currency={currency} 
+                <MealItem
+                    key={meal.id}
+                    meal={meal}
+                    currency={currency}
                     exchangeRate={exchangeRates[currency]}
-                    currencyFormatter={currencyFormatter} 
+                    currencyFormatter={currencyFormatter}
                 />
             ))}
         </ul>
