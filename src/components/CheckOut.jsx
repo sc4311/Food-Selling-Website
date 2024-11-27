@@ -7,6 +7,7 @@ import Button from './UI/Button.jsx';
 import UserProgressContext from '../store/UserProgressContext.jsx';
 import useHttp from '../hooks/useHttp.js';
 import SignIn from './Users/SignIn.jsx';
+import { useUser } from './Users/UserContext.jsx';
 
 const requestConfig = {
     method: 'POST',
@@ -18,6 +19,8 @@ const requestConfig = {
 export default function Checkout() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
+    // const { user, loginUser } = useContext(UserProgressContext);
+    const { user } = useUser();
     const { data, isLoading: isSending, error, sendRequest, clearData } = useHttp('http://localhost:3000/orders', requestConfig);
 
     const [userDetails, setUserDetails] = useState(null); // State to store signed-in user details
@@ -58,7 +61,7 @@ export default function Checkout() {
         const fd = new FormData(event.target);
         const customerData = Object.fromEntries(fd.entries());
 
-        if (!userDetails) {
+        if (!user) {
             // Handle case where user is not added yet
             alert("Please sign in or create an account before submitting the order.");
             return;
@@ -68,18 +71,26 @@ export default function Checkout() {
             order: {
                 items: cartCtx.items,
                 customer: customerData,
-                user: userDetails  // Include the user details
+                user: user  // Include the user details
             },
         }));
     }
 
-    if (!isSignedIn) {
+    if (!user) {
         return (
             <Modal open={userProgressCtx.process === 'checkout'} onClose={handleClose}>
-                <SignIn onSignIn={handleSignIn} onCreateAccount={handleCreateAccount} onClose={handleClose}/>
+                <SignIn onClose={handleClose} />
             </Modal>
         );
     }
+
+    // if (!isSignedIn) {
+    //     return (
+    //         <Modal open={userProgressCtx.process === 'checkout'} onClose={handleClose}>
+    //             <SignIn onSignIn={handleSignIn} onCreateAccount={handleCreateAccount} onClose={handleClose}/>
+    //         </Modal>
+    //     );
+    // }
 
     let actions = (
         <>
