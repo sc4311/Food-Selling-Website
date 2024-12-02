@@ -96,7 +96,7 @@ const SignIn = ({onClose}) => {
     if (user) {
         return (
             <div>
-              <h2>Welcome, {user.name}!</h2>
+              <h2>Account Information:</h2>
               {!isEditing ? (
                 <div>
                   <p>Name: {user.name}</p>
