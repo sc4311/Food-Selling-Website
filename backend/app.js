@@ -64,12 +64,13 @@ app.post('/api/auth/signin', async (req, res) => {
     const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
     const accounts = JSON.parse(accountsData);
 
-    const user = accounts.find(
-      (account) => account.email === email
-    );
+    const user = accounts.find((account) => account.email === email);
 
     if (user) {
-      res.status(200).json({ message: 'User found, logged in successfully.' });
+      res.status(200).json({
+        message: 'User found, logged in successfully.',
+        user: { email: user.email, name: user.name, street: user.street, postalCode: user.postalCode, city: user.city }
+      });
     } else {
       res.status (401).json({ message: 'Invalid email or password.' });
     }
@@ -91,7 +92,7 @@ app.post('/api/auth/signup', async (req, res) => {
     if (userExists) {
       res.status(409).json({ message: 'User already exists.' });
     } else {
-      const newUser = { email, password };
+      const newUser = { email, password, name: '', street: '', postalCode: '', city: '' };
       accounts.push(newUser);
 
       await fs.writeFile('./data/accounts.json', JSON.stringify(accounts));
@@ -103,6 +104,29 @@ app.post('/api/auth/signup', async (req, res) => {
     console.error(error);
   }
 })
+
+app.post('/api/auth/update', async (req, res) => {
+  const { email, name, street, postalCode, city } = req.body;
+  console.log("Update request recieved for:", email);
+
+  try {
+    const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
+    const accounts = JSON.parse(accountsData);
+
+    const userIndex = accounts.findIndex((acc) => acc.email === email);
+    if (userIndex === -1) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Update user information
+    accounts[userIndex] = { ...accounts[userIndex], name, street, postalCode, city };
+    await fs.writeFile('./data/accounts.json', JSON.stringify(accounts, null, 2));
+    res.status(200).json({ message: 'User updated successfully.' });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: 'Server error while updating user.' });
+  }
+});
 
 app.use((req, res) => {
   if (req.method === 'OPTIONS') {
