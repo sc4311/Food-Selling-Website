@@ -19,17 +19,19 @@ const requestConfig = {
 export default function Checkout() {
     const cartCtx = useContext(CartContext);
     const userProgressCtx = useContext(UserProgressContext);
-    // const { user, loginUser } = useContext(UserProgressContext);
     const { user } = useUser();
     const { data, isLoading: isSending, error, sendRequest, clearData } = useHttp('http://localhost:3000/orders', requestConfig);
 
-    const [userDetails, setUserDetails] = useState(null); // State to store signed-in user details
-    const [isSignedIn, setIsSignedIn] = useState(false); // State to check if the user is signed in
+    const [discountCode, setDiscountCode] = useState('');
+    const [discountApplied, setDiscountApplied] = useState(false);
+    const [discountAmount, setDiscountAmount] = useState(0);
 
     const cartTotal = cartCtx.items.reduce((totalPrice, item) => {
         return totalPrice + (item.price * item.quantity);
     }, 0);
+    const tax = (cartTotal * 0.0825).toFixed(2)
     const cartTotalWithTax = cartTotal * (1 + 0.0825);
+    const discountedTotal = cartTotalWithTax - discountAmount;
 
     const currencyFormatter = getCurrencyFormatter();
 
@@ -43,16 +45,15 @@ export default function Checkout() {
         clearData();
     }
 
-    function handleSignIn(user) {
-        // Handle sign-in logic, e.g., sending the data to a backend and verifying it
-        setUserDetails(user);
-        setIsSignedIn(true); // Set the user as signed in
-    }
-
-    function handleCreateAccount(user) {
-        // Handle account creation logic (e.g., sending data to a backend service)
-        setUserDetails(user);
-        setIsSignedIn(true); // Set the user as signed in after account creation
+    function handleApplyDiscount() {
+        if (discountCode === 'SAVE10') {
+            setDiscountAmount(cartTotalWithTax * 0.10);
+            setDiscountApplied(true);
+        } else {
+            alert('Invalid discount code.');
+            setDiscountAmount(0);
+            setDiscountApplied(false);
+        }
     }
 
     function handleSubmit(event) {
@@ -84,14 +85,6 @@ export default function Checkout() {
         );
     }
 
-    // if (!isSignedIn) {
-    //     return (
-    //         <Modal open={userProgressCtx.process === 'checkout'} onClose={handleClose}>
-    //             <SignIn onSignIn={handleSignIn} onCreateAccount={handleCreateAccount} onClose={handleClose}/>
-    //         </Modal>
-    //     );
-    // }
-
     let actions = (
         <>
             <Button type="button" textOnly onClick={handleClose}>Close</Button>
@@ -120,7 +113,6 @@ export default function Checkout() {
         <Modal open={userProgressCtx.process === 'checkout'} onClose={handleClose}>
             <form onSubmit={handleSubmit}>
                 <h2>Check Out</h2>
-                <p>Total Amount: {currencyFormatter.format(cartTotalWithTax)}</p>
 
                 <Input label="Full Name" type="text" id="name" defaultValue={user.name || ''} />
                 <Input label="Email Address" type="email" id="email" defaultValue={user.email || ''} />
@@ -129,6 +121,22 @@ export default function Checkout() {
                     <Input label="Postal Code" type="text" id="postal-code" defaultValue={user.postalCode || ''} />
                     <Input label="City" type="text" id="city" defaultValue={user.city || ''} />
                 </div>
+
+                <h4>Price Details:</h4>
+                {/* <Input label="Discount Code" type="text"/> */}
+                <p>Subtotal: {currencyFormatter.format(cartTotal)}</p>
+                <p>Tax: {currencyFormatter.format(tax)}</p>
+                {discountApplied && (
+                    <p>Discount Applied: -{currencyFormatter.format(discountAmount)}</p>
+                )}
+                <p>Final Amount: {currencyFormatter.format(discountedTotal)}</p>
+                <Input
+                    label="Discount Code"
+                    type="text"
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                />
+                <Button type="button" onClick={handleApplyDiscount}>Apply</Button>
 
                 {error && <Error title="Failed to send order" message={error} />}
                 <p className="modal-actions">{actions}</p>

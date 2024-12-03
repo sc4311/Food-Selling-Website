@@ -16,9 +16,12 @@ body {
 
 #main-header {
   display: flex;
+  position: sticky;
+  background-color: #1d1a16;
+  top: 0;
   justify-content: space-between;
   align-items: center;
-  padding: 3rem 10%;
+  padding: 1rem 10%;
 }
 
 #main-header #title {
