@@ -1,6 +1,5 @@
 import express from 'express';
 import mysql from 'mysql2';
-import fs from 'node:fs/promises';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import moment from 'moment';
@@ -104,9 +103,7 @@ app.post('/orders', (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Failed to generate unique order ID.', error: err.message });
     }
-
     
-   
     const newOrder = {
       order_id: uniqueId,
       order_date: currentDate, 
@@ -275,7 +272,7 @@ app.post('/api/auth/update', (req, res) => {
   try {
     const query = `
       UPDATE accounts 
-      SET acc_username = ?, acc_address = ?, postalCode = ?, city = ?
+      SET acc_username = ?, acc_address = ?, acc_postal = ?, acc_city = ?
       WHERE acc_email = ?
     `;
 
@@ -291,77 +288,6 @@ app.post('/api/auth/update', (req, res) => {
 
       res.status(200).json({ message: 'User updated successfully.' });
     });
-  } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ message: 'Server error while updating user.' });
-  }
-});
-
-app.post('/api/auth/signin', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
-    const accounts = JSON.parse(accountsData);
-
-    const user = accounts.find((account) => account.email === email);
-
-    if (user) {
-      res.status(200).json({
-        message: 'User found, logged in successfully.',
-        user: { email: user.email, name: user.name, street: user.street, postalCode: user.postalCode, city: user.city }
-      });
-    } else {
-      res.status (401).json({ message: 'Invalid email or password.' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Server error.' });
-    console.error(error);
-  }
-});
-
-app.post('/api/auth/signup', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
-    const accounts = JSON.parse(accountsData);
-
-    const userExists = accounts.some((account) => account.email === email);
-
-    if (userExists) {
-      res.status(409).json({ message: 'User already exists.' });
-    } else {
-      const newUser = { email, password, name: '', street: '', postalCode: '', city: '' };
-      accounts.push(newUser);
-
-      await fs.writeFile('./data/accounts.json', JSON.stringify(accounts));
-
-      res.status(201).json({ message: 'Account created successfully.' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Server error.' });
-    console.error(error);
-  }
-})
-
-app.post('/api/auth/update', async (req, res) => {
-  const { email, name, street, postalCode, city } = req.body;
-  console.log("Update request recieved for:", email);
-
-  try {
-    const accountsData = await fs.readFile('./data/accounts.json', 'utf8');
-    const accounts = JSON.parse(accountsData);
-
-    const userIndex = accounts.findIndex((acc) => acc.email === email);
-    if (userIndex === -1) {
-      return res.status(404).json({ message: 'User not found.' });
-    }
-
-    // Update user information
-    accounts[userIndex] = { ...accounts[userIndex], name, street, postalCode, city };
-    await fs.writeFile('./data/accounts.json', JSON.stringify(accounts, null, 2));
-    res.status(200).json({ message: 'User updated successfully.' });
   } catch (error) {
     console.error("Error updating user:", error);
     res.status(500).json({ message: 'Server error while updating user.' });
