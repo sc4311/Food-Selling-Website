@@ -27,8 +27,8 @@ app.use(express.static('public'));
 // CORS setup
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
@@ -54,34 +54,6 @@ app.get('/meals', (req, res) => {
       return res.status(500).json({ error: 'Failed to fetch meals' });
     }
     res.json(results);  // Send the results to the client
-  });
-});
-
-app.get('/:table', (req, res) => {
-  const { table } = req.params;
-  db.query(`SELECT * FROM ${table}`, (err, results) => {
-    if (err) {
-        console.error("Direct query error:", err.message);
-        return res.status(500).json({ error: 'Error accessing the table directly' });
-    }
-    res.json(results);
-  });
-});
-
-app.get('/:table/:id', (req, res) => {
-  const id = req.params.id;
-  const { table } = req.params;
-  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
-  if(table === 'accounts'){
-    idField = "acc_id";
-  }
-  if(table === 'transactions'){
-    idField = "order_id";
-  }
-  db.query('SELECT * FROM ?? WHERE ?? = ?', [table,idField,id], (err, results) => {
-  if (err) return res.status(500).json({ error: 'Error' });
-  if (results.length === 0) return res.status(404).json({ error: 'Item not found' });
-  res.json(results[0]);
   });
 });
 
@@ -147,75 +119,6 @@ app.post('/orders', (req, res) => {
       });
     });
   });
-});
-
-
-
-
-app.post('/auth/login', (req, res) => {
-  const { username, password } = req.body;
-
-  const query = 'SELECT * FROM accounts WHERE acc_username = ? AND acc_password = ?';
-
-  db.query(query, [username, password], (err, results) => {
-      if (err) {
-          console.error('Error during login query execution:', err);
-          return res.status(500).json({ error: 'Server error during login' });
-      }
-      if (results.length === 0) {
-          return res.status(401).json({ error: 'Invalid username or password' });
-      }
-
-      const user = results[0];
-      delete user.password; 
-      res.json(user); 
-  });
-});
-
-app.put('/:table/:id', (req, res) => {
-  const id = req.params.id;  
-  const { table } = req.params;
-  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
-
-  if (table === 'accounts') {
-      idField = "acc_id";
-  }
-  if(table === 'transactions'){
-    idField = "order_id";
-  }
-  const updatedItem = req.body; 
-  delete updatedItem.id;
-
-  db.query('UPDATE ?? SET ? WHERE ?? = ?', [table, updatedItem, idField, id], (err, result) => {
-    if (err) {
-        console.error('Error updating item:', err);
-        return res.status(500).json({ error: 'Error updating item' });
-    }
-
-    if (result.affectedRows > 0) {
-      return res.json({ ...updatedItem});
-    } else {
-      return res.status(404).json({ error: 'Item not found' });
-    }
-  });
-});
-
-
-app.delete('/:table/:id', (req, res) => {
-  const id = req.params.id;
-  const { table } = req.params;
-  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
-  if(table === 'accounts'){
-    idField = "acc_id";
-  }
-  if(table === 'transactions'){
-    idField = "order_id";
-  }
-    db.query('DELETE FROM ?? WHERE ?? = ?', [table,idField,id], (err) => {
-        if (err) return res.status(500).json({ error: 'Cannot Delete'});
-
-        res.json({ id });
-    });
 });
 
 app.post('/api/auth/signin', (req, res) => {
@@ -289,7 +192,6 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 });
 
-
 app.post('/api/auth/update', (req, res) => {
   const { email, name, street, postalCode, city } = req.body;
   console.log("Update request received for:", email);
@@ -317,6 +219,125 @@ app.post('/api/auth/update', (req, res) => {
     console.error("Error updating user:", error);
     res.status(500).json({ message: 'Server error while updating user.' });
   }
+});
+
+//Admin dashboard login
+app.post('/auth/login', (req, res) => {
+  const { username, password } = req.body;
+
+  const query = 'SELECT * FROM accounts WHERE acc_username = ? AND acc_password = ?';
+
+  db.query(query, [username, password], (err, results) => {
+      if (err) {
+          console.error('Error during login query execution:', err);
+          return res.status(500).json({ error: 'Server error during login' });
+      }
+      if (results.length === 0) {
+          return res.status(401).json({ error: 'Invalid username or password' });
+      }
+
+      const user = results[0];
+      delete user.password; 
+      res.json(user); 
+  });
+});
+
+//Get list
+app.get('/:table', (req, res) => {
+  const { table } = req.params;
+  db.query(`SELECT * FROM ${table}`, (err, results) => {
+    if (err) {
+        console.error("Direct query error:", err.message);
+        return res.status(500).json({ error: 'Error accessing the table directly' });
+    }
+    res.json(results);
+  });
+});
+
+//Get one
+app.get('/:table/:id', (req, res) => {
+  const id = req.params.id;
+  const { table } = req.params;
+  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
+  if(table === 'accounts'){
+    idField = "acc_id";
+  }
+  if(table === 'transactions'){
+    idField = "order_id";
+  }
+  db.query('SELECT * FROM ?? WHERE ?? = ?', [table,idField,id], (err, results) => {
+  if (err) return res.status(500).json({ error: 'Error' });
+  if (results.length === 0) return res.status(404).json({ error: 'Item not found' });
+  res.json(results[0]);
+  });
+});
+
+app.put('/:table/:id', (req, res) => {
+  const id = req.params.id;  
+  const { table } = req.params;
+  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
+
+  if (table === 'accounts') {
+      idField = "acc_id";
+  }
+  if(table === 'transactions'){
+    idField = "order_id";
+  }
+  const updatedItem = req.body; 
+  delete updatedItem.id;
+
+  db.query('UPDATE ?? SET ? WHERE ?? = ?', [table, updatedItem, idField, id], (err, result) => {
+    if (err) {
+        console.error('Error updating item:', err);
+        return res.status(500).json({ error: 'Error updating item' });
+    }
+
+    if (result.affectedRows > 0) {
+      return res.json({ ...updatedItem});
+    } else {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+  });
+});
+
+app.post('/:table', (req, res) => {
+  const { table } = req.params;
+  const newItem = req.body;
+  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
+
+  if (table === 'accounts') {
+      idField = "acc_id";
+  }
+  if (table === 'transactions') {
+    idField = "order_id";
+  }
+
+  db.query('INSERT INTO ?? SET ?', [table, newItem], (err, result) => {
+    if (err) {
+        console.error('Error creating item:', err);
+        return res.status(500).json({ error: 'Error creating item' });
+    }
+
+    const createdItem = { ...newItem, [idField]: result.insertId };
+    res.status(201).json(createdItem);  
+  });
+});
+
+app.delete('/:table/:id', (req, res) => {
+  const id = req.params.id;
+  const { table } = req.params;
+  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
+  if(table === 'accounts'){
+    idField = "acc_id";
+  }
+  if(table === 'transactions'){
+    idField = "order_id";
+  }
+    db.query('DELETE FROM ?? WHERE ?? = ?', [table,idField,id], (err) => {
+        if (err) return res.status(500).json({ error: 'Cannot Delete'});
+
+        res.json({ id });
+    });
 });
 
 app.use((req, res) => {

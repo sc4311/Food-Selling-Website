@@ -89,11 +89,15 @@ const create = async (resource, params) => {
             timeout: 6000,
         });
 
-        if (response.status !== 200) {
+        if (response.status !== 201) {
             throw new Error(`Network response was not ok: ${response.status}`);
         }
-        
-        return { data: { ...response.data, id: response.data[idField] } };
+
+        const createdItem = response.data;
+        const id = createdItem[idField] || createdItem.id;
+
+        cachedData = []
+        return { data: { ...createdItem, id } };
     } catch (error) {
         console.error('Error creating item:', error); 
         if (error.response) {
@@ -181,7 +185,6 @@ const deleteMany = async (resource, params) => {
         });
 
         cachedData = cachedData.filter(item => !params.ids.includes(item.id));
-
         return { data: params.ids };
     } catch (error) {
         console.error('Error deleting multiple items:', error);
