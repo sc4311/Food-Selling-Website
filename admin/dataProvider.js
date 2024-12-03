@@ -22,7 +22,9 @@ const getList = async (resource, params) => {
             if (resource === "accounts") {
                 idField = "acc_id";
             }
-
+            else if (resource === "transactions") {
+                idField = "order_id";
+            }
             cachedData = response.data.map(item => ({
                 ...item,
                 id:item[idField]
@@ -59,6 +61,9 @@ const getOne = async (resource, params) => {
     let idField = `${resource.replace(/s$/, "").split("_")[0]}_id`;
     if (resource === "accounts") {
         idField = "acc_id";
+    }
+    else if (resource === "transactions") {
+        idField = "order_id";
     }
     const itemId = params.data?.[idField] || params.id;
 
@@ -101,7 +106,10 @@ const create = async (resource, params) => {
 
 const update = async (resource, params) => {
     let idField = `${resource.replace(/s$/, "").split("_")[0]}_id`;
-    if (resource === "accounts") {
+    if (resource === "transactions") {
+        idField = "order_id";
+    }
+    else if (resource === "accounts") {
         idField = "acc_id";
     }
     const itemId = params.data?.[idField] || params.id;
@@ -131,6 +139,9 @@ const update = async (resource, params) => {
 
 const deleteOne = async (resource, params) => {
     let idField = `${resource.replace(/s$/, "").split("_")[0]}_id`;
+    if (resource === "transactions") {
+        idField = "order_id";
+    }
     const itemId = params.data?.[idField] || params.id;
 
     try {

@@ -100,6 +100,14 @@ const getResource = (resource) => {
                     emptyText="Select order status" />
                 </>
                 );
+                case "discount_codes":
+                    return (
+                        <>
+                            <NumberInput source = 'discount_id' label = "Id"/>
+                            <TextInput source="discount_code" label="Code" fullWidth />
+                            <NumberInput source='discount_amount' label='Amount' fullWidth />
+                        </>
+                    );
         default:
             return null;
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Datagrid, TextField, NumberField } from 'react-admin';
+import { List, Datagrid, TextField, NumberField, DateField } from 'react-admin';
 
 const ItemList = ({ resource, fields, ...props }) => {
   return (
@@ -12,6 +12,8 @@ const ItemList = ({ resource, fields, ...props }) => {
             case 'text':
             default:
               return <TextField key={field.source} source={field.source} label={field.label} />;
+            case 'date':
+              return <DateField key={field.source} source={field.source} label={field.label} />;
           }
         })}
       </Datagrid>

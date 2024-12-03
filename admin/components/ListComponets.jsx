@@ -45,9 +45,16 @@ const accountFields = [
 
 const transactionFields = [
   { source: 'order_id', label: 'ID', type: 'text'},
-  { source: 'order_date', label: 'Date', type: 'text'},
+  { source: 'order_name', label: 'Name', type: 'text'},
+  { source: 'order_date', label: 'Date', type: 'date'},
   { source: 'order_total', label: 'Total', type: 'number'},
   { source: 'order_status', label: 'Status', type: 'text'}
+];
+
+const discountFields = [
+  { source: 'discount_id', label: 'ID', type: 'number' },
+  { source: 'discount_code', label: 'Code', type: 'text' },
+  { source: 'discount_amount', label: 'Amount', type: 'number' },
 ];
 
 const MealList = (props) => (
@@ -78,4 +85,8 @@ const OrderList = (props) => (
   <ItemList resource="transactions" fields={transactionFields} {...props}/>
 );
 
-export { MealList, AppetizersList, SaladList, SideList, DrinkList, AccountList, OrderList };
+const DiscountList = (props) => (
+  <ItemList resource="discount_codes" fields={discountFields} {...props}/>
+);
+
+export { MealList, AppetizersList, SaladList, SideList, DrinkList, AccountList, OrderList, DiscountList };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Show, SimpleShowLayout, TextField, useResourceContext, NumberField, ImageField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DateField, useResourceContext, NumberField, ImageField } from 'react-admin';
 
 const ItemShow = (props) => {
     const resource = useResourceContext();
@@ -70,9 +70,8 @@ const ItemShow = (props) => {
             return(
                 <SimpleShowLayout>
                     <NumberField source='order_id' label ='Id'/>
-                    <NumberField source='order_fname' label ='First name'/>
-                    <NumberField source='order_lname' label ='Last name'/>
-                    <TextField source='order_date' label ='Date'/>
+                    <NumberField source='order_name' label ='name'/>
+                    <DateField source='order_date' label ='Date'/>
                     <NumberField source='order_total' label = "Total"/>
                     <TextField source='order_status' label = "Status"/>
                 </SimpleShowLayout>
@@ -84,7 +83,18 @@ const ItemShow = (props) => {
                     <TextField source = "acc_username" label = "Username"/>
                     <TextField source = "acc_email" label = "Email"/>
                     <TextField source = "acc_address" label = "Address"/>
+                    <TextField source = "acc_postal" label = "Zip code"/>
+                    <TextField source = "acc_city" label = "City"/>
                     <TextField source = "role" label = "Role"/>
+                </SimpleShowLayout>
+            );
+            case"discount_codes":
+            return(
+                <SimpleShowLayout>
+                    <NumberField source="discount_id" label = "Code ID"/>
+                    <TextField source= 'discount_code' label= 'Code'/>
+                    <NumberField source = 'discount_amount' label = 'Amount'/>
+
                 </SimpleShowLayout>
             );
         }

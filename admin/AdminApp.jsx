@@ -13,7 +13,8 @@ import {
   SideList, 
   DrinkList, 
   AccountList, 
-  OrderList 
+  OrderList,
+  DiscountList
 } from "./components/ListComponets.jsx";
 import ItemEdit from "./components/ItemEdit";
 import ItemShow from "./components/ItemShow.jsx";
@@ -72,6 +73,13 @@ export const AdminApp = () => (
       list = {AccountList}
       edit = {ItemEdit}
       show = {ItemShow}
+    />
+    <Resource
+      name ="discount_codes"
+      list = {DiscountList}
+      edit = {ItemEdit}
+      show = {ItemShow}
+      create={ItemCreate}
     />
   </Admin>
 );

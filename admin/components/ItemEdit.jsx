@@ -74,7 +74,9 @@ const ItemEdit = (props) => {
                     <>
                         <TextInput source="acc_username" label="Username" fullWidth />
                         <TextInput source="acc_email" label="Email" multiline fullWidth />
-                        <NumberInput source="acc_id" label="ID" fullWidth />
+                        <TextInput source="acc_address" label="Address" multiline fullWidth />
+                        <TextInput source="acc_postal" label="Zip code" multiline fullWidth />
+                        <TextInput source="acc_city" label="City" multiline fullWidth />
                         <SelectInput source="role" label="Role" choices={[
                             { id: 'admin', name: 'Admin' },
                             { id: 'user', name: 'User' }
@@ -84,9 +86,7 @@ const ItemEdit = (props) => {
             case "transactions":
                 return (
                     <>
-                        <TextInput source="order_fname" label="Fist name" multiline fullWidth />
-                        <TextInput source="order_lname" label="Last name" multiline fullWidth />
-                        <TextInput source="order_date" label="Date" multiline fullWidth />
+                        <TextInput source="order_name" label="Fist name" multiline fullWidth />
                         <NumberInput source="order_total" label="Total" fullWidth />
                         <SelectInput source="order_status" label="Status" choices={[
                             { id: 'in_progress', name: 'In Progress' },
@@ -94,6 +94,13 @@ const ItemEdit = (props) => {
                         ]} emptyText="Select status" />
                     </>
                 );
+                case "discount_codes":
+                    return (
+                        <>
+                            <TextInput source="discount_code" label="Code" fullWidth />
+                            <NumberInput source='discount_amount' label='Amount' fullWidth />
+                        </>
+                    );
             default:
                 return null;
         }

@@ -5,6 +5,7 @@ import { getCurrencyFormatter } from "./util/formatting";
 import { exchangeRates } from "./util/exchangeRates";  
 import { CartContextProvider } from "./store/CartContext";
 import { UserProgressContextProvider, UserProgressContext } from "./store/UserProgressContext";
+import { UserProvider } from "./components/Users/UserContext.jsx";
 import Cart from "./components/Cart";
 import Checkout from "./components/CheckOut";
 import SignIn from "./components/Users/SignIn";
@@ -19,15 +20,17 @@ function App() {
   };
 
   return (
-    <UserProgressContextProvider>
-      <CartContextProvider>
-        <Header onCurrencyChange={handleCurrencyChange} />
-        <Meals currency={currency} exchangeRates={exchangeRates} currencyFormatter={currencyFormatter} />
-        <Cart currencyFormatter={currencyFormatter} />
-        <Checkout currencyFormatter={currencyFormatter} />
-        <AccountModal /> {/* Render the Account modal conditionally */}
-      </CartContextProvider>
-    </UserProgressContextProvider>
+    <UserProvider>
+      <UserProgressContextProvider>
+        <CartContextProvider>
+          <Header onCurrencyChange={handleCurrencyChange} />
+          <Meals currency={currency} exchangeRates={exchangeRates} currencyFormatter={currencyFormatter} />
+          <Cart currencyFormatter={currencyFormatter} />
+          <Checkout currencyFormatter={currencyFormatter} />
+          <AccountModal /> {/* Render the Account modal conditionally */}
+        </CartContextProvider>
+      </UserProgressContextProvider>
+    </UserProvider>
   );
 }
 
