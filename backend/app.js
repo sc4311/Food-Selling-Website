@@ -1,77 +1,83 @@
 import express from 'express';
-import mysql from 'mysql2';
+import mysql from 'mysql2'; // Remove if you're not using file reading anymore
+import mysql from 'mysql2'; // Import MySQL package
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import moment from 'moment';
 
 const app = express();
-app.use(bodyParser.json());
-app.use(express.static('public'));
-const connection = mysql.createConnection({
 
+// Database connection setup
+const db = mysql.createConnection({
   host: 'scrumpy-foods.cj0cmagoo0l5.us-east-2.rds.amazonaws.com',
   user: 'admin',
   password: 'scrumpyfoods2024!',
-  database:'scrumpyfoods'
+  database: 'scrumpyfoods',
 });
 
-connection.connect((err) => {
-  if (err) throw err;
-  console.log('Connected to the database');
+db.connect((err) => {
+  if (err) {
+    console.error('Database connection failed:', err);
+  } else {
+    console.log('Connected to the database.');
+  }
 });
 
-app.use(express.json());
-app.use(cors({
-    methods: ['GET','POST','PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
+// CORS setup
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
-app.get('/:table', (req, res) => {
-  const { table } = req.params;
-  connection.query(`SELECT * FROM ${table}`, (err, results) => {
-    if (err) {
-        console.error("Direct query error:", err.message);
-        return res.status(500).json({ error: 'Error accessing the table directly' });
+// /meals route modified to fetch from MySQL database
+app.get('/meals', (req, res) => {
+  const query = `
+    SELECT appetizer_id AS id, appetizer_name AS name, appetizer_price AS price, appetizer_description AS description, appetizer_image AS image FROM appetizers
+    UNION ALL
+    SELECT main_id AS id, main_name AS name, main_price AS price, main_description AS description, main_image AS image FROM main_courses
+    UNION ALL
+    SELECT dessert_id AS id, dessert_name AS name, dessert_price AS price, dessert_description AS description, dessert_image AS image FROM desserts
+    UNION ALL
+    SELECT drink_id AS id, drink_name AS name, drink_price AS price, drink_description AS description, drink_image AS image FROM drinks
+    UNION ALL
+    SELECT salad_id AS id, salad_name AS name, salad_price AS price, salad_description AS description, salad_image AS image FROM salads
+    UNION ALL
+    SELECT side_id AS id, side_name AS name, side_price AS price, side_description AS description, side_image AS image FROM sides;
+  `;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Database query error:', error);  // Log the error here for debugging
+      return res.status(500).json({ error: 'Failed to fetch meals' });
     }
-    res.json(results);
+    res.json(results);  // Send the results to the client
+  });
 });
 
-});
+// /orders route remains the same
+app.post('/orders', async (req, res) => {
+  const orderData = req.body.order;
 
-app.get('/:table/:id', (req, res) => {
-    const id = req.params.id;
-    const { table } = req.params;
-    let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
-    if(table === 'accounts'){
-      idField = "acc_id";
-    }
-    if(table === 'transactions'){
-      idField = "order_id";
-    }
-    connection.query('SELECT * FROM ?? WHERE ?? = ?', [table,idField,id], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Error' });
-    if (results.length === 0) return res.status(404).json({ error: 'Item not found' });
-    res.json(results[0]);
-    });
-});
-
-app.post('/orders', (req, res) => {
-  const { order } = req.body;
-  const currentDate = moment().format('YYYY-MM-DD');
-  
-  if (!order) {
-    return res.status(400).json({ message: 'Invalid order data.' });
+  if (orderData === null || orderData.items === null || orderData.items.length === 0) {
+    return res.status(400).json({ message: 'Missing data.' });
   }
 
-  const { items, customer, user } = order;
-
   if (
-    !customer.name || !customer.name.trim() ||
-    !customer.email || !customer.email.includes('@') ||
-    !customer.street || !customer.street.trim() ||
-    !customer['postal-code'] || !customer['postal-code'].trim() ||
-    !customer.city || !customer.city.trim()
+    orderData.customer.email === null ||
+    !orderData.customer.email.includes('@') ||
+    orderData.customer.name === null ||
+    orderData.customer.name.trim() === '' ||
+    orderData.customer.street === null ||
+    orderData.customer.street.trim() === '' ||
+    orderData.customer['postal-code'] === null ||
+    orderData.customer['postal-code'].trim() === '' ||
+    orderData.customer.city === null ||
+    orderData.customer.city.trim() === ''
   ) {
     return res.status(400).json({
       message: 'Missing data: Name, email, street, postal code, or city is required.',
@@ -302,4 +308,8 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
 });
 
-app.listen(3000);
+// Start the server
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+

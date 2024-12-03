@@ -4,24 +4,25 @@ import CartContext from "../store/CartContext.jsx";
 
 export default function MealItem({ meal, currency, exchangeRate, currencyFormatter }) {
     const cartCtx = useContext(CartContext);
-    const convertedPrice = meal.main_price * exchangeRate; 
-    
-    function handleAddMealToCart(){
-        cartCtx.addItem(meal);
+    const convertedPrice = meal.price * exchangeRate;  // Currency conversion
+
+    function handleAddMealToCart() {
+        cartCtx.addItem(meal);  // Add the meal to the cart when the button is clicked
     };
+
     return (
         <li className="meal-item">
             <article>
-                <img src={meal.main_image} alt={meal.main_name} />
+                <img src={meal.image} alt={meal.name} />  {/* Render meal image */}
                 <div>
-                    <h3>{meal.main_name}</h3>
+                    <h3>{meal.name}</h3>  {/* Meal name */}
                     <p className="meal-item-price">
-                        {currencyFormatter.format(convertedPrice)}
+                        {currencyFormatter.format(convertedPrice)}  {/* Display formatted price */}
                     </p>
-                    <p className="meal-item-description">{meal.main_description}</p>
+                    <p className="meal-item-description">{meal.description}</p>  {/* Meal description */}
                 </div>
                 <p className="meal-item-actions">
-                    <Button onClick={handleAddMealToCart}>Add to Cart</Button>
+                    <Button onClick={handleAddMealToCart}>Add to Cart</Button>  {/* Button to add meal to cart */}
                 </p>
             </article>
         </li>
