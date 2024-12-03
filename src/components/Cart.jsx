@@ -2,7 +2,6 @@ import { useContext } from "react"
 import Modal from "./UI/Modal.jsx"
 import CartContext from "../store/CartContext.jsx";
 import { getCurrencyFormatter } from "../util/formatting.js";
-
 import Button from "./UI/Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
 import CartItem from "./CartItem.jsx";
@@ -12,10 +11,9 @@ export default function Cart({ currencyFormatter }) {
     const userProgressCtx = useContext(UserProgressContext);
 
     const cartTotal = cartCtx.items.reduce((totalPrice, item) => {
-        return totalPrice + (item.main_price * item.quantity);
+        return totalPrice + (item.price * item.quantity);
     }, 0);
     const cartTotalWithTax = cartTotal * (1 + 0.0825);
-
     function handleCloseCart() {
         userProgressCtx.hideCart();
     }
@@ -35,12 +33,12 @@ export default function Cart({ currencyFormatter }) {
         <ul>
             {cartCtx.items.map((item) => (
                 <CartItem 
-                key={item.main_id} 
-                name={item.main_name} 
+                key={item.id} 
+                name={item.name} 
                 quantity={item.quantity} 
-                price={item.main_price}
+                price={item.price}
                 onIncrease={()=> cartCtx.addItem(item)}
-                onDecrease={() => cartCtx.removeItem(item.main_id)}
+                onDecrease={() => cartCtx.removeItem(item.id)}
                 />
             ))}
         </ul>

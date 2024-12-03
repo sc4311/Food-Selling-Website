@@ -1,8 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2'; // Remove if you're not using file reading anymore
-import mysql from 'mysql2'; // Import MySQL package
 import bodyParser from 'body-parser';
-import cors from 'cors';
 import moment from 'moment';
 
 const app = express();
@@ -59,44 +57,65 @@ app.get('/meals', (req, res) => {
   });
 });
 
-// /orders route remains the same
-app.post('/orders', async (req, res) => {
-  const orderData = req.body.order;
+app.get('/:table', (req, res) => {
+  const { table } = req.params;
+  db.query(`SELECT * FROM ${table}`, (err, results) => {
+    if (err) {
+        console.error("Direct query error:", err.message);
+        return res.status(500).json({ error: 'Error accessing the table directly' });
+    }
+    res.json(results);
+  });
+});
 
-  if (orderData === null || orderData.items === null || orderData.items.length === 0) {
-    return res.status(400).json({ message: 'Missing data.' });
+app.get('/:table/:id', (req, res) => {
+  const id = req.params.id;
+  const { table } = req.params;
+  let idField = `${table.replace(/s$/, "").split("_")[0]}_id`;
+  if(table === 'accounts'){
+    idField = "acc_id";
   }
+  if(table === 'transactions'){
+    idField = "order_id";
+  }
+  db.query('SELECT * FROM ?? WHERE ?? = ?', [table,idField,id], (err, results) => {
+  if (err) return res.status(500).json({ error: 'Error' });
+  if (results.length === 0) return res.status(404).json({ error: 'Item not found' });
+  res.json(results[0]);
+  });
+});
 
+// /orders route remains the same
+app.post('/orders', (req, res) => {
+  const { order } = req.body;
+  const currentDate = moment().format('YYYY-MM-DD');
+  
+  if (!order) {
+    return res.status(400).json({ message: 'Invalid order data.' });
+  }
+  const { items, customer, user } = order;
   if (
-    orderData.customer.email === null ||
-    !orderData.customer.email.includes('@') ||
-    orderData.customer.name === null ||
-    orderData.customer.name.trim() === '' ||
-    orderData.customer.street === null ||
-    orderData.customer.street.trim() === '' ||
-    orderData.customer['postal-code'] === null ||
-    orderData.customer['postal-code'].trim() === '' ||
-    orderData.customer.city === null ||
-    orderData.customer.city.trim() === ''
+    !customer.name || !customer.name.trim() ||
+    !customer.email || !customer.email.includes('@') ||
+    !customer.street || !customer.street.trim() ||
+    !customer['postal-code'] || !customer['postal-code'].trim() ||
+    !customer.city || !customer.city.trim()
   ) {
     return res.status(400).json({
       message: 'Missing data: Name, email, street, postal code, or city is required.',
     });
   }
-
   if (!user || !user.name || !user.email) {
     return res.status(400).json({
       message: 'User information is required to place an order.',
     });
   }
-
   const orderTotal = items.reduce((total, item) => {
-    return total + (item.main_price * item.quantity);
+    return total + (item.price * item.quantity);
   }, 0);
-
   function generateUniqueOrderId(callback) {
     const newId = Math.floor(Math.random() * 1000); 
-    connection.query('SELECT order_id FROM transactions WHERE order_id = ?', [newId], (err, results) => {
+    db.query('SELECT order_id FROM transactions WHERE order_id = ?', [newId], (err, results) => {
       if (err) return callback(err);
       if (results.length > 0) {
         return generateUniqueOrderId(callback);
@@ -104,12 +123,12 @@ app.post('/orders', async (req, res) => {
       callback(null, newId);
     });
   }
-
   generateUniqueOrderId((err, uniqueId) => {
     if (err) {
       return res.status(500).json({ message: 'Failed to generate unique order ID.', error: err.message });
     }
     
+   
     const newOrder = {
       order_id: uniqueId,
       order_date: currentDate, 
@@ -117,12 +136,10 @@ app.post('/orders', async (req, res) => {
       order_status: 'in_progress', 
       order_name: customer.name, 
     };
-
-    connection.query('INSERT INTO transactions SET ?', newOrder, (err, results) => {
+    db.query('INSERT INTO transactions SET ?', newOrder, (err, results) => {
       if (err) {
         return res.status(500).json({ message: 'Failed to create order.', error: err.message });
       }
-
       res.status(201).json({
         message: 'Order created successfully!',
         order_id: uniqueId,
@@ -133,12 +150,14 @@ app.post('/orders', async (req, res) => {
 });
 
 
+
+
 app.post('/auth/login', (req, res) => {
   const { username, password } = req.body;
 
   const query = 'SELECT * FROM accounts WHERE acc_username = ? AND acc_password = ?';
 
-  connection.query(query, [username, password], (err, results) => {
+  db.query(query, [username, password], (err, results) => {
       if (err) {
           console.error('Error during login query execution:', err);
           return res.status(500).json({ error: 'Server error during login' });
@@ -167,7 +186,7 @@ app.put('/:table/:id', (req, res) => {
   const updatedItem = req.body; 
   delete updatedItem.id;
 
-  connection.query('UPDATE ?? SET ? WHERE ?? = ?', [table, updatedItem, idField, id], (err, result) => {
+  db.query('UPDATE ?? SET ? WHERE ?? = ?', [table, updatedItem, idField, id], (err, result) => {
     if (err) {
         console.error('Error updating item:', err);
         return res.status(500).json({ error: 'Error updating item' });
@@ -192,7 +211,7 @@ app.delete('/:table/:id', (req, res) => {
   if(table === 'transactions'){
     idField = "order_id";
   }
-    connection.query('DELETE FROM ?? WHERE ?? = ?', [table,idField,id], (err) => {
+    db.query('DELETE FROM ?? WHERE ?? = ?', [table,idField,id], (err) => {
         if (err) return res.status(500).json({ error: 'Cannot Delete'});
 
         res.json({ id });
@@ -203,7 +222,7 @@ app.post('/api/auth/signin', (req, res) => {
   const { email, password } = req.body;
 
   try {
-    connection.query('SELECT * FROM accounts WHERE acc_email = ?', [email], (err, results) => {
+    db.query('SELECT * FROM accounts WHERE acc_email = ?', [email], (err, results) => {
       if (err) {
         return res.status(500).json({ message: 'Server error' });
       }
@@ -239,7 +258,7 @@ app.post('/api/auth/signup', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    connection.query('SELECT * FROM accounts WHERE acc_email = ?', [email], (err, results) => {
+    db.query('SELECT * FROM accounts WHERE acc_email = ?', [email], (err, results) => {
       if (err) {
         return res.status(500).json({ message: 'Server error' });
       }
@@ -256,7 +275,7 @@ app.post('/api/auth/signup', async (req, res) => {
         acc_username: email,
       };
 
-      connection.query('INSERT INTO accounts SET ?', newUser, (err, result) => {
+      db.query('INSERT INTO accounts SET ?', newUser, (err, result) => {
         if (err) {
           return res.status(500).json({ message: 'Server error while creating user.' });
         }
@@ -282,7 +301,7 @@ app.post('/api/auth/update', (req, res) => {
       WHERE acc_email = ?
     `;
 
-    connection.query(query, [name, street, postalCode, city, email], (err, results) => {
+    db.query(query, [name, street, postalCode, city, email], (err, results) => {
       if (err) {
         console.error("Error updating user:", err);
         return res.status(500).json({ message: 'Server error while updating user.' });
