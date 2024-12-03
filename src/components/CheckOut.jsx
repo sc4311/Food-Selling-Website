@@ -27,7 +27,7 @@ export default function Checkout() {
     const [isSignedIn, setIsSignedIn] = useState(false); // State to check if the user is signed in
 
     const cartTotal = cartCtx.items.reduce((totalPrice, item) => {
-        return totalPrice + (item.main_price * item.quantity);
+        return totalPrice + (item.price * item.quantity);
     }, 0);
     const cartTotalWithTax = cartTotal * (1 + 0.0825);
 

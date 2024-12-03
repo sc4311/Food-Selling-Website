@@ -1,15 +1,13 @@
 import useHttp from '../hooks/useHttp.js';
 import MealItem from './MealItem.jsx';
 
-
 const requestConfig = {};
 export default function Meals({ currency, exchangeRates, currencyFormatter }) {
-    const table = 'main_courses';
     const {
         data: loadedMeals,
         isLoading,
         error,
-    } = useHttp(`http://localhost:3000/${table}`, requestConfig, []);
+    } = useHttp('http://localhost:3000/meals', requestConfig, []);
 
     if (isLoading) {
         return <p className="center">Loading...</p>;

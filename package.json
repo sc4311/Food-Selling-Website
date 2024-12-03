@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "moment": "^2.30.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.4",
     "react": "^18.2.0",
     "react-admin": "^5.2.2",
     "react-dom": "^18.2.0"
