@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import fs from 'node:fs/promises'; // Remove if you're not using file reading anymore
 import mysql from 'mysql2'; // Import MySQL package
-=======
-import fs from 'node:fs/promises';
->>>>>>> bfabbd0b38a3888bdf87bb2f3bf8e04e542b710d
 import bodyParser from 'body-parser';
 import express from 'express';
 
@@ -98,9 +94,6 @@ app.post('/orders', async (req, res) => {
   res.status(201).json({ message: 'Order created!' });
 });
 
-<<<<<<< HEAD
-// 404 handler
-=======
 app.post('/api/auth/signin', async (req, res) => {
   const { email, password } = req.body;
 
@@ -172,7 +165,6 @@ app.post('/api/auth/update', async (req, res) => {
   }
 });
 
->>>>>>> bfabbd0b38a3888bdf87bb2f3bf8e04e542b710d
 app.use((req, res) => {
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);

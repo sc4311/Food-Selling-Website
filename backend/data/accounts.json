@@ -1,18 +1,1 @@
-[
-  {
-    "email": "joshuafoate@gmail.com",
-    "password": "asdf",
-    "name": "Joshua Foate",
-    "street": "456 Bandera Rd",
-    "postalCode": "12345",
-    "city": "San Antonio"
-  },
-  {
-    "email": "test@gmail.com",
-    "password": "asdfasdf",
-    "name": "Test",
-    "street": "Test 123",
-    "postalCode": "12345",
-    "city": "Test City"
-  }
-]
+[{"email":"joshuafoate@gmail.com","password":"asdf","name":"Joshua Foate","street":"456 Bandera Rd","postalCode":"12345","city":"San Antonio"},{"email":"test@gmail.com","password":"asdfasdf","name":"Test","street":"Test 123","postalCode":"12345","city":"Test City"},{"email":"scrumpytest@gmail.com","password":"scrumpy","name":"","street":"","postalCode":"","city":""}]
