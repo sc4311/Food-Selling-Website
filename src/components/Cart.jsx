@@ -2,7 +2,6 @@ import { useContext } from "react"
 import Modal from "./UI/Modal.jsx"
 import CartContext from "../store/CartContext.jsx";
 import { getCurrencyFormatter } from "../util/formatting.js";
-
 import Button from "./UI/Button.jsx";
 import UserProgressContext from "../store/UserProgressContext.jsx";
 import CartItem from "./CartItem.jsx";
@@ -15,7 +14,6 @@ export default function Cart({ currencyFormatter }) {
         return totalPrice + (item.price * item.quantity);
     }, 0);
     const cartTotalWithTax = cartTotal * (1 + 0.0825);
-
     function handleCloseCart() {
         userProgressCtx.hideCart();
     }

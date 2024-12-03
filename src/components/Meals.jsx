@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MealItem from './MealItem.jsx';
 
+
 export default function Meals({ currency, exchangeRates, currencyFormatter }) {
     const [meals, setMeals] = useState([]);  // State to hold meal data
     const [isLoading, setIsLoading] = useState(true);  // Loading state

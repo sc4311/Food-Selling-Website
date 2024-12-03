@@ -71,8 +71,8 @@ export default function Checkout() {
             order: {
                 items: cartCtx.items,
                 customer: customerData,
-                user: user  // Include the user details
-            },
+                user
+            }
         }));
     }
 
