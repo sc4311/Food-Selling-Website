@@ -35,17 +35,17 @@ app.use((req, res, next) => {
 // /meals route modified to fetch from MySQL database
 app.get('/meals', (req, res) => {
   const query = `
-    SELECT appetizer_id AS id, appetizer_name AS name, appetizer_price AS price, appetizer_description AS description, appetizer_image AS image FROM appetizers
+    SELECT appetizer_id AS id, appetizer_name AS name, appetizer_price AS price, appetizer_description AS description, appetizer_image AS image, category FROM appetizers
     UNION ALL
-    SELECT main_id AS id, main_name AS name, main_price AS price, main_description AS description, main_image AS image FROM main_courses
+    SELECT main_id AS id, main_name AS name, main_price AS price, main_description AS description, main_image AS image, category FROM main_courses
     UNION ALL
-    SELECT dessert_id AS id, dessert_name AS name, dessert_price AS price, dessert_description AS description, dessert_image AS image FROM desserts
+    SELECT dessert_id AS id, dessert_name AS name, dessert_price AS price, dessert_description AS description, dessert_image AS image, category FROM desserts
     UNION ALL
-    SELECT drink_id AS id, drink_name AS name, drink_price AS price, drink_description AS description, drink_image AS image FROM drinks
+    SELECT drink_id AS id, drink_name AS name, drink_price AS price, drink_description AS description, drink_image AS image, category FROM drinks
     UNION ALL
-    SELECT salad_id AS id, salad_name AS name, salad_price AS price, salad_description AS description, salad_image AS image FROM salads
+    SELECT salad_id AS id, salad_name AS name, salad_price AS price, salad_description AS description, salad_image AS image, category FROM salads
     UNION ALL
-    SELECT side_id AS id, side_name AS name, side_price AS price, side_description AS description, side_image AS image FROM sides;
+    SELECT side_id AS id, side_name AS name, side_price AS price, side_description AS description, side_image AS image, category FROM sides;
   `;
 
   db.query(query, (error, results) => {

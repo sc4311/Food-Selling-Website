@@ -38,6 +38,28 @@ body {
   border: 2px solid #ffc404;
 }
 
+#main-header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 0 1rem; /* Add space between the search bar and buttons */
+}
+
+.search-wrapper {
+  flex-grow: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  width: 60%;  /* Adjust width of the search bar */
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
 #main-header button {
   font-size: 1.5rem;
   font-family: 'Lato', sans-serif;
@@ -59,12 +81,28 @@ h1 {
   list-style: none;
   margin: 2rem auto;
   padding: 1rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: 1rem;
+}
+
+.meal-category {
+  margin-bottom: 3rem;
+}
+
+.meal-category h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.meal-list {
+  display: flex;  /* Arrange the meals in a row */
+  flex-wrap: wrap;  /* Wrap the meals to the next line if needed */
+  gap: 1rem;  /* Add space between the meal items */
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
 }
 
 .meal-item {
+  flex: 0 1 calc(25% - 1rem);  /* 4 items per row, adjusting for gap */
   background-color: #1d1a16;
   border-radius: 1rem;
   overflow: hidden;
@@ -108,6 +146,40 @@ h1 {
 
 .meal-item-actions {
   margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .meal-item {
+    flex: 0 1 calc(50% - 1rem);  /* 2 items per row on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .meal-item {
+    flex: 0 1 calc(100% - 1rem);  /* 1 item per row on mobile */
+  }
+}
+
+.sort-container {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.sort-container select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #1d1a16;
+  color: #ffc404;
+}
+
+.sort-container label {
+  font-size: 1rem;
+  color: #ffc404;
 }
 
 .cart h2 {
