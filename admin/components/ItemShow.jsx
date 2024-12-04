@@ -46,14 +46,14 @@ const ItemShow = (props) => {
                     <ImageField source="drink_image" label="Site Image" />
                 </SimpleShowLayout>
             );
-            case"deserts":
+            case"desserts":
             return(
                 <SimpleShowLayout>
-                    <NumberField source = "desert_id" label = "Item ID"/>
-                    <TextField source = "desert_name" label = "Name"/>
-                    <TextField source = "desert_description" label = "Description"/>
-                    <NumberField source = "desert_price" label = "Price"/>
-                    <ImageField source="desert_image" label="Site Image" />
+                    <NumberField source = "dessert_id" label = "Item ID"/>
+                    <TextField source = "dessert_name" label = "Name"/>
+                    <TextField source = "dessert_description" label = "Description"/>
+                    <NumberField source = "dessert_price" label = "Price"/>
+                    <ImageField source="dessert_image" label="Site Image" />
                 </SimpleShowLayout>
             );
             case"sides":

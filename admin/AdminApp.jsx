@@ -11,6 +11,7 @@ import {
   AppetizersList, 
   SaladList, 
   SideList, 
+  DessertList,
   DrinkList, 
   AccountList, 
   OrderList,
@@ -44,6 +45,13 @@ export const AdminApp = () => (
     <Resource
       name="salads"
       list={SaladList}
+      edit={ItemEdit}
+      show={ItemShow}
+      create={ItemCreate}
+    />
+    <Resource
+      name="desserts"
+      list={DessertList}
       edit={ItemEdit}
       show={ItemShow}
       create={ItemCreate}

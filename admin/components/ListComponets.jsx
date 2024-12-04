@@ -29,6 +29,13 @@ const sideFields = [
   { source: 'side_price', label: 'Price', type: 'number' },
 ];
 
+const dessertFields = [
+  { source: 'dessert_id', label: 'Item ID', type: 'number' },
+  { source: 'dessert_name', label: 'Name', type: 'text' },
+  { source: 'dessert_description', label: 'Description', type: 'text' },
+  { source: 'dessert_price', label: 'Price', type: 'number' },
+];
+
 const drinkFields = [
   { source: 'drink_id', label: 'Item ID', type: 'number' },
   { source: 'drink_name', label: 'Name', type: 'text' },
@@ -73,6 +80,10 @@ const SideList = (props) => (
   <ItemList resource="sides" fields={sideFields} {...props}/>
 );
 
+const DessertList = (props) =>(
+  <ItemList resource="desserts" fields={dessertFields} {...props}/>
+);
+
 const DrinkList = (props) => (
   <ItemList resource="drinks" fields={drinkFields} {...props}/>
 );
@@ -89,4 +100,4 @@ const DiscountList = (props) => (
   <ItemList resource="discount_codes" fields={discountFields} {...props}/>
 );
 
-export { MealList, AppetizersList, SaladList, SideList, DrinkList, AccountList, OrderList, DiscountList };
+export { MealList, AppetizersList, SaladList, SideList, DessertList, DrinkList, AccountList, OrderList, DiscountList };
