@@ -34,8 +34,9 @@ This **Food Selling Website** was developed as a project for a Software Engineer
 ## Installation 📦
 
 1. **Clone the Repository**:
-   ```bash
+```bash
    git clone https://github.com/sc4311/Food-Selling-Website.git
+```
 2. **Navigate to the Project Directory**:
 ```bash
    cd Food-Selling-Website
