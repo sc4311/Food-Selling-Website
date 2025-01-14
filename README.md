@@ -38,5 +38,23 @@ Welcome to the **Food Selling Website** repository! This project is a fully func
 2. **Navigate to the Project Directory**:
 ```bash
    cd Food-Selling-Website
+```
+3. **Install Dependencies**:
+```bash
    npm install
+```
+4. Setup Environment Variables:
+```bash
+  MONGO_URI=your-mongodb-connection-string
+  JWT_SECRET=your-jwt-secret
+  PORT=your-server-port
+```
+5.**Run the Application**:
+```bash
+npm start
+```
+6.**Open Browser**:
+```bash
+  http://localhost:3000
+
 
